@@ -1,6 +1,6 @@
 # Phex data dispatcher
 
-The EVREF experimental server has only one opened port (for security reasons).
+The EVREF experimental server has only one opened port (for security reasons).  
 This project aims to dispatch the received data to other servers responsible for the data treatment.
 
 ## Installation
@@ -18,8 +18,8 @@ Metacello new
 
 ## Prerequisites
 
-Before being started its requires a JSON file named "redirections.json" at the root of the image directory.
-This file must declare the redirections to apply as shown by the following example:
+Before being started its requires a JSON file named "redirections.json" at the root of the image directory.  
+This file must declare the redirections to apply, as shown by the following example:
 
 ```
 {
