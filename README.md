@@ -21,7 +21,7 @@ Metacello new
 Before being started its requires a JSON file named "redirections.json" at the root of the image directory.  
 This file must declare the redirections to apply, as shown by the following example:
 
-```
+```json
 {
 	"oldPath" : {
 		"host" : "localhost",
@@ -36,7 +36,7 @@ Be aware, all arguments are mandatory, and if the "redirections.json" file is ab
 ## Usage example
 
 To start a `PhexDataDispatcher` on the port 8080, execute the following snippet:
-```
+```st
 PhexDataDispatcher start: 8080
 ```
 
