@@ -62,7 +62,9 @@ PhexDataDispatcher class >> start: aPort [
 
 	instance ifNil: [ instance := self new ].
 	instance redirections: self redirections.
-	instance start: aPort
+	instance start: aPort.
+	
+	^ instance
 
 	
 ]
@@ -71,10 +73,10 @@ PhexDataDispatcher class >> start: aPort [
 PhexDataDispatcher class >> stop [
 
 	instance ifNil: [ 
-		self error: 'No instance of the dispatcher is running. Use PXDataDispatcher class >> #start'
+		self error: 'No instance of the dispatcher is running. Use ', (self class >> #start:) name
 	].
 
-	instance stop
+	^ instance stop
 ]
 
 { #category : 'public' }
