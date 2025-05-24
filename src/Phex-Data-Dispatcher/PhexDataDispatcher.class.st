@@ -92,12 +92,11 @@ PhexDataDispatcher >> handleRequest: aRequest [
 	segments addAllFirst: (((redirection at: #path) splitOn: $/) reject: [ :s | s isEmptyOrNil ]).
 	segments addAll: aRequest uri segments copyWithoutFirst.
 
-	aRequest uri segments: segments.
-
 	^ ZnClient new
 		request: aRequest;
 		host: (redirection at: #host);
 		port: (redirection at: #port);
+		path: (segments joinUsing: $/);
 		execute;
 		response
 ]
