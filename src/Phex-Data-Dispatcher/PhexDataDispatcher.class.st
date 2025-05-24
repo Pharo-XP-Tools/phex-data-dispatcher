@@ -76,7 +76,10 @@ PhexDataDispatcher class >> stop [
 		self error: 'No instance of the dispatcher is running. Use ', (self class >> #start:) name
 	].
 
-	^ instance stop
+	instance stop.
+	instance := nil.
+	
+	^ instance
 ]
 
 { #category : 'public' }
