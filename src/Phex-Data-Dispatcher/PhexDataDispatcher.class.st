@@ -5,34 +5,20 @@
 
 ## Prerequisites
 
-Before starting the dispatcher, create a JSON file named ""redirections.json"" at the root of the image directory.
-This file must declare the redirections to apply as illustrated by the example below.  
+Before being started its requires a JSON file named ""redirections.json"" at the root of the image directory.
+This file must declare the redirections to apply as shown by the following example:
 
-redirections.json
 ```
 {
 	""oldPath"" : {
 		""host"" : ""localhost"",
-		""port"" : 4040,
+		""port"" : 8888,
 		""path"" : ""newPath""	
-	},
-	""path"" : {
-		""host"" : ""localhost"",
-		""port"" : 4242,
-		""path"" : """"	
-	},
+	}
 }
 ```
 
-For a dispatcher started on the 8080 port, this ""redirections.json"" example specifies that an incoming request to:  
-- `http://localhost:8080/oldPath` must be forwarded to `http://localhost:4040/newPath`.
-- `http://localhost:8080/path` must be forwarded to `http://localhost:4242/`
-
-### Good to know
-
-- Be aware, all arguments are mandatory, and if the ""redirections.json"" file is absent or not formatted as expected, the program is going to crash.  
-- If the ""redirections.json"" declares redirections with identical incoming path, the last one will prevail.
-- Modifications to the ""redirections.json"" will be applied only after a restart of the dispatcher. 
+Be aware, all arguments are mandatory, and if the ""redirections.json"" file is absent or not formatted as expected, the program is going to crash.
 
 ## Usage example
 
@@ -43,7 +29,7 @@ PhexDataDispatcher start: 8080
 
 ## Possible errors
 
-When the dispatcher receives a request with a path that is undeclared by the ""redirections.json"" file, it returns a code 500 to the client, with the following message in payload:
+When the dispatcher receives a request with a path that is undeclared in the ""redirections.json"" file, it returns a code 500 to the client, with the following message in payload:
 
 ""The redirection of /undeclared path is not configured.""
 
@@ -76,7 +62,9 @@ PhexDataDispatcher class >> start: aPort [
 
 	instance ifNil: [ instance := self new ].
 	instance redirections: self redirections.
-	instance start: aPort
+	instance start: aPort.
+	
+	^ instance
 
 	
 ]
@@ -85,10 +73,13 @@ PhexDataDispatcher class >> start: aPort [
 PhexDataDispatcher class >> stop [
 
 	instance ifNil: [ 
-		self error: 'No instance of the dispatcher is running. Use PXDataDispatcher class >> #start'
+		self error: 'No instance of the dispatcher is running. Use ', (self class >> #start:) name
 	].
 
-	instance stop
+	instance stop.
+	instance := nil.
+	
+	^ instance
 ]
 
 { #category : 'public' }
@@ -104,12 +95,11 @@ PhexDataDispatcher >> handleRequest: aRequest [
 	segments addAllFirst: (((redirection at: #path) splitOn: $/) reject: [ :s | s isEmptyOrNil ]).
 	segments addAll: aRequest uri segments copyWithoutFirst.
 
-	aRequest uri segments: segments.
-
 	^ ZnClient new
 		request: aRequest;
 		host: (redirection at: #host);
 		port: (redirection at: #port);
+		path: (segments joinUsing: $/);
 		execute;
 		response
 ]
