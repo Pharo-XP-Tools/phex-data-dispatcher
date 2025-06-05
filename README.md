@@ -18,10 +18,10 @@ Metacello new
 
 ## Prerequisites
 
-Before starting the dispatcher, create a JSON file named "redirections.json" at the root of the image directory.
+Before starting the dispatcher, create a JSON file named "redirections.json" at the root of the image directory.  
 This file must declare the redirections to apply as illustrated by the example below.  
 
-redirections.json
+`redirections.json`
 ```
 {
 	"oldPath" : {
