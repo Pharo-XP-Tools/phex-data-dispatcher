@@ -114,6 +114,7 @@ PhexDataDispatcher >> handleRequest: aRequest [
 		host: (redirection at: #host);
 		port: (redirection at: #port);
 		path: (segments joinUsing: $/);
+		streaming: true;
 		execute;
 		response
 ]
